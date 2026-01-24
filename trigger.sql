@@ -1,3 +1,7 @@
+-- This supabase trigger change the inspection type from "APPROVED" to "COMPLETED" 
+-- when a pdf is deleted from the bucket. This means it was successfully uploaded 
+-- to the DELL Server
+
 -- 1. Create the bucket 'reports-pdfs' if it doesn't exist
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('reports-pdfs', 'reports-pdfs', false)
@@ -7,24 +11,30 @@ ON CONFLICT (id) DO NOTHING;
 CREATE OR REPLACE FUNCTION public.handle_bucket_delete()
 RETURNS trigger AS $$
 DECLARE
-  inspection_id text;
-  raw_metadata jsonb;
+  inspection_id_raw text;
 BEGIN
-  -- Extract metadata
-  raw_metadata := OLD.metadata;
+  inspection_id_raw := split_part(OLD.name, '.pdf', 1);
   
-  -- Check if metadata contains inspection_id
-  IF raw_metadata ? 'inspection_id' THEN
-    inspection_id := raw_metadata ->> 'inspection_id';
+  IF inspection_id_raw IS NOT NULL AND inspection_id_raw <> '' THEN
     
-    -- Update inspection status to COMPLETED
-    UPDATE "Inspection"
-    SET status = 'COMPLETED', "closedAt" = NOW()
-    WHERE id = inspection_id;
+    UPDATE public."Inspection"
+    SET 
+      status = 'COMPLETED' 
+    WHERE id = inspection_id_raw;
+
+    IF FOUND THEN
+      RAISE NOTICE 'Trigger Success: Updated Inspection % to COMPLETED', inspection_id_raw;
+    ELSE
+      RAISE WARNING 'Trigger Warning: No row found in "Inspection" with id = %', inspection_id_raw;
+    END IF;
     
   END IF;
   
   RETURN OLD;
+EXCEPTION
+  WHEN OTHERS THEN
+    RAISE WARNING 'Trigger Error: Failed to update status for %. Error: %', OLD.name, SQLERRM;
+    RETURN OLD;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -34,5 +44,5 @@ DROP TRIGGER IF EXISTS on_file_delete ON storage.objects;
 CREATE TRIGGER on_file_delete
 AFTER DELETE ON storage.objects
 FOR EACH ROW
-WHEN (old.bucket_id = 'reports-pdfs')
+WHEN (OLD.bucket_id = 'reports-pdfs')
 EXECUTE FUNCTION public.handle_bucket_delete();

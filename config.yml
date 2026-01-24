@@ -1,0 +1,7 @@
+tunnel: 011f91f5-e612-4f7b-8292-2b1c5085a548
+credentials-file: /Users/theperas/.cloudflared/credentials.json
+
+ingress:
+  - hostname: inspections.theperas.com
+    service: http://localhost:3001
+  - service: http_status:404
