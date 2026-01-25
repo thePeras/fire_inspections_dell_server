@@ -51,9 +51,9 @@ async function downloadAndDeleteFile(file: FileObject) {
         if (metadataError) throw metadataError;
 
         const { metadata } = expandedData;
-        const { companySlug, clientId, establishmentId, typeCode, dateStr } = metadata as any;
+        const { companySlug, clientId, establishmentId, typeCode, dateStr, inspectionName } = metadata as any;
 
-        const newFileName = `${clientId}.${typeCode}.1.${establishmentId} Relatorio de Manutencao ${dateStr}.pdf`;
+        const newFileName = `${clientId}.${typeCode}.1.${establishmentId} relatorio de verificacao ${inspectionName} ${dateStr}.pdf`;
 
         const companyFolder = companySlug === "vianafogo" ? "999" : "333";
 
