@@ -5,3 +5,4 @@ node_modules/
 downloads/
 dist/
 logs/
+.env.prod
