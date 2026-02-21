@@ -1,0 +1,13 @@
+Já feito:
+- Cloudflare tunnel configurado
+
+Por Fazer:
+- Mover o .env para dentro do projeto
+- Instalar Python 3.8.10
+- pip install flask supabase python-dotenv
+
+Remover a antiga configuração do PM2 e adicionar a nova:
+- pm2 stop fire-reports
+- pm2 delete fire-reports
+- pm2 start main.py --interpreter python --name fire-reports-python
+- pm2 save

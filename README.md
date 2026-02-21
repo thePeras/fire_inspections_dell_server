@@ -14,7 +14,7 @@ Copy the example file to .env
 cp .env.example .env
 ```
 
-Fill the values in the .env file.
+Fill the .env with the file sent by the author and edit only the DOWNLOAD_DIR variable, to poin to the parent folder of "999" and "333"
 
 ## Install Cloudflared
 
@@ -23,8 +23,10 @@ Follow the instructions for your operating system to install Cloudflared: [https
 ## Setup a tunnel
 
 Install the tunnel service, so it runs automatically on boot.
+Change the TUNNEL_TOKEN with the token from the sent .env file.
+
 ```bash
-sudo cloudflared service install YOUR_TOKEN_HERE
+sudo cloudflared service install TUNNEL_TOKEN
 ```
 
 ## Install the corresponding Nodejs
@@ -47,7 +49,7 @@ npm run build
 
 ```bash
 npm install -g pm2
-pm2 start dist/index.js --name fire-reports
+pm2 start main.py --interpreter "C:\Users\Administrator\AppData\Local\Programs\Python\Python38\pythonw.exe" --name fire-reports-python
 pm2 startup
 pm2 save
 ```
