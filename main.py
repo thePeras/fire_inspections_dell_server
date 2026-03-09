@@ -80,11 +80,11 @@ def download_and_delete_file(file_name):
         insp_name_map = {
                 2: 'Caixas SI',
                 3: 'Hidrante',
-                8: 'Portas Corta-Fogo e Portas de Emergência',
-                9: 'Portões Corta-Fogo',
-                10: 'Iluminação Emergência',
-                12: 'Redes Secas e Húmidas + Bocas Incêndio',
-                16: 'Mantas Ignífugas',
+                8: 'Portas Corta-Fogo e Emergencia',
+                9: 'Portoes Corta-Fogo',
+                10: 'Iluminacao Emergencia',
+                12: 'BI',
+                16: 'Mantas Ignifugas',
         }
 
         new_name = f"{client_id}.{type_code}.1.{est_id}. relatorio de verificacao {insp_name_map.get(type_code, insp_name)} {date_str}.pdf"
