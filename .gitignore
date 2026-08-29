@@ -1,5 +1,4 @@
-digest.txt
-node_modules/
+__pycache__
 .DS_Store
 .env
 downloads/

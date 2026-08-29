@@ -80,13 +80,19 @@ def download_and_delete_file(file_name):
         insp_name_map = {
                 2: 'Caixas SI',
                 3: 'Hidrante',
+                5: 'SADI',
+                6: 'Desenfumagem',
                 8: 'Portas Corta-Fogo e Emergencia',
                 9: 'Portoes Corta-Fogo',
                 10: 'Iluminacao Emergencia',
                 12: 'BI',
+                13: 'Sprinklers e Postos de Controlo',
                 16: 'Mantas Ignifugas',
+                18: 'Cortina Corta-Fogo',
+                26: 'Tela Cantonamento'
         }
 
+        # Should this get the periodicity??
         new_name = f"{client_id}.{type_code}.1.{est_id}. relatorio de verificacao {insp_name_map.get(type_code, insp_name)} {date_str}.pdf"
         
         company_folder = "999_Docs" if meta.get("companySlug") == "vianafogo" else "333_Docs"
